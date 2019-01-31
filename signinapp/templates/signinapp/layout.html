@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+ <title>
+	{% block title %}
+        {% if user.is_authenticated %}
+            {{ user.get_full_name | capfirst }}
+        {% else %}
+            Авторизация
+        {% endif %}
+    {% endblock %}
+ </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "style.css" %}">
+</head>
+<body>
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+		<div class="container">
+                 <div class="login-block">
+                     {% if user.is_authenticated %}
+                         <form action="{% url 'logout' %}">
+                         <button type="submit" class="btn btn-primary">Выйти</button>
+                {% else %}
+            <form action="{% url "social:begin" "vk-oauth2" %}">
+                         <button type="submit" class="btn btn-primary">Авторизоваться</button>
+                     {% endif %}
+                 </div>
+		</div>
+	</nav>
+    <div class="container">
+	    {% block content %}
+	    {% endblock content %}
+    </div>
+</body>
+</html>
